@@ -1,26 +1,22 @@
+// Gallery image tap-to-toggle for mobile
 function setupGalleryTextToggles() {
     const isMobile = window.matchMedia("(max-width: 900px)").matches;
     document.querySelectorAll('.gallery-item').forEach(item => {
         const text = item.querySelector('.gallery-text');
-        // Remove all previous click handlers
         item.onclick = null;
 
         if (isMobile) {
             text.style.opacity = '0';
             text.style.pointerEvents = 'none';
-
             item.onclick = function(e) {
                 e.stopPropagation();
-                // If already open, close it
-                if (text.style.opacity === '1') {
-                    text.style.opacity = '0';
-                    text.style.pointerEvents = 'none';
-                } else {
-                    // Hide all others
-                    document.querySelectorAll('.gallery-text').forEach(t => {
-                        t.style.opacity = '0';
-                        t.style.pointerEvents = 'none';
-                    });
+                const isOpen = text.style.opacity === '1';
+                document.querySelectorAll('.gallery-text').forEach(t => {
+                    t.style.opacity = '0';
+                    t.style.pointerEvents = 'none';
+                });
+                // Toggle this one
+                if (!isOpen) {
                     text.style.opacity = '1';
                     text.style.pointerEvents = 'auto';
                 }
@@ -32,7 +28,6 @@ function setupGalleryTextToggles() {
         }
     });
 
-    // Tap anywhere else closes open captions
     if (isMobile) {
         document.addEventListener('click', function hideAllGalleryText(e) {
             if (!e.target.closest('.gallery-item')) {
@@ -44,7 +39,6 @@ function setupGalleryTextToggles() {
         });
     }
 }
-
 
 function setupMobileMenu() {
     const navToggle = document.querySelector('.nav-toggle');
